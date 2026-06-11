@@ -1,36 +1,24 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Wolfie
 
-## Getting Started
+Wolfie is a lightweight, self-hosted management and monitoring platform for [Cowrie honeypots](https://github.com/cowrie/cowrie). It provides a simple, dependency-free interface to understand attacker behavior, view live activity, and explore recorded sessions.
 
-First, run the development server:
+## Architecture
+This project is built from scratch using pure HTML5, CSS3, and Vanilla JavaScript (ES Modules). It intentionally avoids heavy frameworks (like React or Vue) and build tools (like Webpack or Vite) to remain simple, fast, and easy to understand for security students and homelab operators.
 
+## Features (MVP)
+- **Dashboard Overview:** High-level metrics on honeypot activity.
+- **Sessions & Details:** Deep dive into individual attacker sessions, including a visual TTY replay.
+- **Live Activity:** Stream of raw honeypot events.
+- **Downloads:** Tracking of malware payloads and artifacts dropped by attackers.
+
+## Running Locally
+Since there is no build step, you can simply serve the directory with any static HTTP server. For example, using Python:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+python3 -m http.server 8000
 ```
+Then open `http://localhost:8000` in your web browser.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Documentation
+- [Cowrie Analysis & Mapping](docs/cowrie-analysis.md)
+- [Architecture](docs/architecture.md)
+- [Roadmap](docs/roadmap.md)
