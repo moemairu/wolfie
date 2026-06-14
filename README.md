@@ -1,26 +1,53 @@
-# Wolfie 🐺
+<div align="center">
+  <img src="https://raw.githubusercontent.com/moemairu/wolfie/master/docs/dashboard-preview.png" width="800" alt="Wolfie Dashboard">
+  
+  # Wolfie 🐺
 
-A lightweight, real-time, zero-dependency monitoring dashboard for the Cowrie SSH/Telnet honeypot.
+  **A lightweight, real-time, zero-dependency monitoring dashboard for Cowrie SSH/Telnet honeypots.**
 
-![Dashboard Preview](docs/dashboard-preview.png)
+  <p>
+    <a href="#features">Features</a> •
+    <a href="#installation--usage">Installation</a> •
+    <a href="#architecture">Architecture</a> •
+    <a href="#development">Development</a> •
+    <a href="#license">License</a>
+  </p>
+</div>
 
-## What is Wolfie?
+---
 
-Cowrie is a brilliant honeypot, but its output format (`var/log/cowrie/cowrie.json`) is designed for heavy SIEMs like Splunk, ELK, or Datadog. Setting up an ELK stack just to see who's attacking your honeypot is often overkill.
+## 🎯 What is Wolfie?
 
-Wolfie bridges this gap. It's a pure Vanilla JS frontend coupled with a tiny Python relay server that tails your Cowrie logs in real-time. No npm, no Webpack, no React, no databases. Just simple, beautiful insights.
+Cowrie is a brilliant honeypot, but its output format (`var/log/cowrie/cowrie.json`) is designed for heavy SIEMs like Splunk, ELK, or Datadog. Setting up an entire ELK stack just to see who's attacking your honeypot is often overkill.
 
-## Features
+**Wolfie bridges this gap.** It's a pure Vanilla JS frontend coupled with a tiny Python relay server that tails your Cowrie logs in real-time. 
 
-- **Zero Build Tools**: 100% Vanilla JS, HTML, and CSS.
-- **Zero Dependencies**: The relay server uses only the Python Standard Library.
-- **Real-time Streaming**: Uses Server-Sent Events (SSE) to push new attacks to your browser instantly.
-- **Fileless DB**: Reads directly from Cowrie's native NDJSON output.
-- **Terminal Replay**: Chronological command timelines reconstructed from event logs.
-- **Rich Insights**: Tracks success rates, top passwords, active sessions, and downloaded malware.
-- **Mobile Responsive**: Works perfectly on phones and tablets.
+❌ No npm, no Webpack, no React, no databases.  
+✅ Just simple, beautiful insights.
 
-## Installation & Usage
+## ✨ Features
+
+- 🛠️ **Zero Build Tools**: 100% Vanilla JS, HTML, and CSS.
+- 🪶 **Zero Dependencies**: The relay server uses only the Python Standard Library.
+- ⚡ **Real-time Streaming**: Uses Server-Sent Events (SSE) to push new attacks to your browser instantly.
+- 📁 **Fileless DB**: Reads directly from Cowrie's native NDJSON output.
+- 🖥️ **Terminal Replay**: Chronological command timelines reconstructed from event logs.
+- 📊 **Rich Insights**: Tracks success rates, top passwords, active sessions, and downloaded malware.
+- 📱 **Mobile Responsive**: Works perfectly on phones and tablets.
+
+## 📸 Previews
+
+Here is a glimpse of what Wolfie can do:
+
+| Dashboard | Real-Time Activity |
+| :---: | :---: |
+| <img src="docs/dashboard-preview.png" width="400"> | <img src="docs/activity-preview.png" width="400"> |
+| **Sessions Overview** | **Malware Downloads** |
+| <img src="docs/sessions-preview.png" width="400"> | <img src="docs/download-preview.png" width="400"> |
+
+---
+
+## 🚀 Installation & Usage
 
 1. **Clone the repository** (ideally on the same server running Cowrie):
    ```bash
@@ -43,7 +70,9 @@ Wolfie bridges this gap. It's a pure Vanilla JS frontend coupled with a tiny Pyt
 3. **Access the Dashboard**:
    Open `http://your-server-ip:8080` in your browser.
 
-## Architecture
+---
+
+## 🏗️ Architecture
 
 Wolfie relies on a dual-layer architecture:
 
@@ -53,7 +82,9 @@ Wolfie relies on a dual-layer architecture:
    - Maintains an SSE (Server-Sent Events) stream at `/api/events/stream` by tailing the log file and pushing new lines to connected browsers.
 2. **The Frontend (`js/`, `css/`)**: A component-based Vanilla JS application that consumes the REST API for initial state and the SSE stream for live updates.
 
-## Development
+---
+
+## 💻 Development
 
 If you want to modify Wolfie, you don't need any build tools. Simply edit the JS/CSS files and refresh your browser. 
 
@@ -62,6 +93,28 @@ To run with the included demo data:
 python3 server.py
 ```
 
-## License
+---
 
-MIT License. See `LICENSE` for details.
+## 📄 License
+
+MIT License
+
+Copyright (c) 2026 Wolfie Contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
