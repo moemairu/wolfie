@@ -10,6 +10,7 @@
     <a href="#features">Features</a> •
     <a href="#previews">Previews</a> •
     <a href="#installation">Installation</a> •
+    <a href="docs/DOCUMENTATION.md">Documentation</a> •
     <a href="#architecture">Architecture</a> •
     <a href="#development">Development</a> •
     <a href="#license">License</a>
@@ -80,6 +81,8 @@ Wolfie relies on a dual-layer architecture:
 
 1. **The Relay Server (`server.py`)**: A tiny, multi-threaded Python HTTP server that serves static files, provides REST API endpoints, and maintains an SSE stream.
 2. **The Frontend (`js/`, `css/`)**: A component-based Vanilla JS application that consumes the REST API for initial state and the SSE stream for live updates.
+
+**For a deeper dive into the system design, Cowrie data mapping, and project roadmap, please read the [Full Documentation](docs/DOCUMENTATION.md).**
 
 <h2 id="development">💻 Development</h2>
 
