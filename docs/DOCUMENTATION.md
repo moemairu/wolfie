@@ -22,14 +22,14 @@ graph TD
     
     subgraph Wolfie Relay Server
         B -->|Tails & Parses| C[server.py]
-        C -->|Serves Static Files| D(HTML/CSS/JS)
-        C -->|REST API| E(Aggregated JSON)
-        C -->|SSE Stream| F(Real-time Events)
+        C -->|Serves Static Files| D("HTML/CSS/JS")
+        C -->|REST API| E("Aggregated JSON")
+        C -->|SSE Stream| F("Real-time Events")
     end
     
     subgraph Browser Client
         D --> G[Wolfie Dashboard]
-        E -->|fetch()| G
+        E -->|HTTP fetch| G
         F -->|EventSource| G
     end
 ```
@@ -81,6 +81,8 @@ Cowrie is a medium to high interaction SSH and Telnet honeypot designed to log b
 - **LLM Backend**: Dynamically generates responses to attacker commands using Large Language Models like OpenAI GPT.
 
 Cowrie provides rich JSON logging of events, stores TTY logs in a UML-compatible format for replay, and can be integrated with various output modules.
+
+> **Official Documentation Reference:** For more detailed configurations and internals, see the [Official Cowrie Documentation](https://docs.cowrie.org/en/latest/).
 
 ### 2.2 Event Catalog & Dashboard Data Mapping
 
