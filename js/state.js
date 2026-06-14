@@ -6,8 +6,8 @@ class Store extends EventTarget {
         this.state = {
             currentRoute: window.location.hash || '#/',
             theme: 'dark',
-            timeframe: '24h',
-            sessions: [], // Cache for sessions
+            isConnected: false,  // SSE connection status
+            liveEvents: [],      // Buffer of events received via SSE
         };
     }
 

@@ -2,14 +2,13 @@
 
 import { Router } from './router.js';
 import { globalState } from './state.js';
-import { initWebSocket } from './websocket.js';
+import { initSSE } from './sse.js';
 
 // Import Pages
 import { renderDashboard } from './pages/dashboard.js';
 import { renderSessions } from './pages/sessions.js';
 import { renderSessionDetail } from './pages/session-detail.js';
 import { renderDownloads } from './pages/downloads.js';
-import { renderSettings } from './pages/settings.js';
 import { renderActivity } from './pages/activity.js';
 
 // Import Components
@@ -27,14 +26,13 @@ document.addEventListener('DOMContentLoaded', () => {
         '#/sessions': renderSessions,
         '#/sessions/:id': renderSessionDetail,
         '#/activity': renderActivity,
-        '#/downloads': renderDownloads,
-        '#/settings': renderSettings
+        '#/downloads': renderDownloads
     };
 
     new Router(routes);
 
-    // Initialize WebSockets for Live Feeds
-    initWebSocket();
+    // Initialize SSE for live event streaming
+    initSSE();
 
     // Setup global state listeners (e.g. for theme)
     globalState.addEventListener('stateChange', (e) => {

@@ -52,7 +52,10 @@ export class Router {
         }
 
         this.container.innerHTML = '';
+        // Preserve hamburger button, only clear page-specific header content
+        const hamburger = this.header.querySelector('.hamburger-btn');
         this.header.innerHTML = '';
+        if (hamburger) this.header.appendChild(hamburger);
 
         if (match) {
             try {

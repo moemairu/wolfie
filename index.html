@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Wolfie - Lightweight monitoring dashboard for Cowrie SSH/Telnet honeypots. Track attacker sessions, commands, and downloads in real-time.">
+    <meta name="theme-color" content="#050505">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐺</text></svg>">
     <title>Wolfie - Cowrie Honeypot Dashboard</title>
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/layout.css">
@@ -12,12 +15,17 @@
     <div id="app" class="app-layout">
         <!-- Sidebar Navigation -->
         <aside id="sidebar" class="sidebar"></aside>
-        
+
+        <!-- Sidebar overlay for mobile -->
+        <div id="sidebar-overlay" class="sidebar-overlay" onclick="document.getElementById('sidebar').classList.remove('sidebar--open'); this.classList.remove('sidebar-overlay--visible');"></div>
+
         <!-- Main Content Area -->
         <main id="main-content" class="main-content">
             <!-- Page specific header will be mounted here -->
-            <header id="page-header" class="page-header"></header>
-            
+            <header id="page-header" class="page-header">
+                <button id="hamburger" class="hamburger-btn" onclick="document.getElementById('sidebar').classList.toggle('sidebar--open'); document.getElementById('sidebar-overlay').classList.toggle('sidebar-overlay--visible');" aria-label="Toggle menu">☰</button>
+            </header>
+
             <!-- Page content will be mounted here -->
             <div id="page-container" class="page-container"></div>
         </main>

@@ -134,4 +134,67 @@
     .col-span-3, .col-span-4, .col-span-6, .col-span-8 {
         grid-column: span 12;
     }
+
+    .sidebar {
+        position: fixed;
+        left: -280px;
+        top: 0;
+        bottom: 0;
+        width: 260px;
+        transition: left var(--transition-medium);
+        z-index: 100;
+    }
+
+    .sidebar.sidebar--open {
+        left: 0;
+    }
+
+    .sidebar-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 99;
+    }
+
+    .sidebar-overlay.sidebar-overlay--visible {
+        display: block;
+    }
+
+    .page-header {
+        padding-left: var(--spacing-md);
+    }
+
+    .hamburger-btn {
+        display: flex;
+    }
+
+    .grid-dashboard {
+        gap: var(--spacing-md);
+    }
+
+    .page-container {
+        padding: var(--spacing-md);
+    }
+}
+
+/* Hamburger button - hidden on desktop */
+.hamburger-btn {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: transparent;
+    color: var(--text-primary);
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: all var(--transition-fast);
+}
+
+.hamburger-btn:hover {
+    background-color: var(--bg-tertiary);
+    border-color: var(--border-hover);
 }

@@ -2,64 +2,129 @@
 
 import { api } from '../api.js';
 import { renderPageHeader } from '../components/page-header.js';
-import { createReplayViewer } from '../components/replay-viewer.js';
+import { createCommandTimeline } from '../components/command-timeline.js';
 import { createActivityFeed } from '../components/activity-feed.js';
+import { escapeHtml, formatTimestampFull, formatDuration } from '../utils.js';
 
 export async function renderSessionDetail(container, header, params) {
     const sessionId = params.id;
-    renderPageHeader(header, `Session: ${sessionId.substring(0, 8)}`, `<a href="#/sessions">Sessions</a> > ${sessionId.substring(0, 8)}`);
-    
+    const shortId = escapeHtml(sessionId.substring(0, 8));
+    renderPageHeader(header, `Session: ${shortId}`, `<a href="#/sessions">Sessions</a> > ${shortId}`);
+
     container.innerHTML = `<div class="text-muted">Loading session details...</div>`;
 
     try {
         const detail = await api.getSessionDetails(sessionId);
-        
+
         if (!detail || detail.events.length === 0) {
             container.innerHTML = `<div class="text-muted">Session not found.</div>`;
             return;
         }
 
-        // Find the ttylog event if it exists
-        const logEvent = detail.events.find(e => e.eventid === 'cowrie.log.closed');
-        const ttylogPath = logEvent ? logEvent.ttylog : null;
+        const s = detail.summary;
+
+        // Auth attempts section
+        const authHtml = detail.loginAttempts.length > 0
+            ? detail.loginAttempts.map(a => {
+                const isSuccess = a.eventid === 'cowrie.login.success';
+                return `
+                    <div class="auth-attempt ${isSuccess ? 'auth-attempt--success' : 'auth-attempt--failed'}">
+                        <span class="auth-icon">${isSuccess ? '✓' : '✗'}</span>
+                        <span class="font-mono">${escapeHtml(a.username)}</span>
+                        <span class="text-muted">:</span>
+                        <span class="font-mono">${escapeHtml(a.password)}</span>
+                    </div>
+                `;
+            }).join('')
+            : '<div class="text-muted">No login attempts</div>';
+
+        // Downloads section
+        let downloadsHtml = '';
+        if (detail.downloads.length > 0) {
+            const dlRows = detail.downloads.map(dl => `
+                <div class="download-item">
+                    <span class="event-icon event-icon--warning">[↓]</span>
+                    <span class="font-mono">${escapeHtml(dl.url || dl.filename || 'Unknown')}</span>
+                    <span class="text-muted hash-display">${escapeHtml(dl.shasum || '')}</span>
+                </div>
+            `).join('');
+
+            downloadsHtml = `
+                <div class="col-span-12 card">
+                    <div class="card-header">
+                        <div class="card-title">Downloaded Files</div>
+                    </div>
+                    ${dlRows}
+                </div>
+            `;
+        }
 
         container.innerHTML = `
             <div class="grid-dashboard">
                 <div class="col-span-12 card">
-                    <div style="display:flex; gap: 2rem; margin-bottom: 1rem;">
-                        <div>
-                            <div class="text-muted" style="font-size: 0.875rem;">Attacker IP</div>
-                            <div class="font-mono" style="font-size: 1.125rem;">${detail.summary.ip}</div>
+                    <div class="session-summary">
+                        <div class="summary-item">
+                            <div class="summary-label">Attacker IP</div>
+                            <div class="font-mono summary-value">${escapeHtml(s.ip)}</div>
                         </div>
-                        <div>
-                            <div class="text-muted" style="font-size: 0.875rem;">Start Time</div>
-                            <div style="font-size: 1.125rem;">${new Date(detail.summary.startTime).toLocaleString()}</div>
+                        <div class="summary-item">
+                            <div class="summary-label">Start Time</div>
+                            <div class="summary-value">${formatTimestampFull(s.startTime)}</div>
                         </div>
-                        <div>
-                            <div class="text-muted" style="font-size: 0.875rem;">Duration</div>
-                            <div style="font-size: 1.125rem;">${logEvent ? logEvent.duration + 's' : 'Ongoing'}</div>
+                        <div class="summary-item">
+                            <div class="summary-label">Duration</div>
+                            <div class="summary-value">${s.duration ? formatDuration(s.duration) : 'Ongoing'}</div>
                         </div>
+                        <div class="summary-item">
+                            <div class="summary-label">Status</div>
+                            <div class="summary-value">
+                                ${s.success
+                                    ? '<span class="badge badge-danger">Compromised</span>'
+                                    : '<span class="badge badge-info">Attempt</span>'}
+                            </div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-label">Commands</div>
+                            <div class="summary-value">${s.commandCount}</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-label">Total Events</div>
+                            <div class="summary-value">${s.eventCount}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-span-4 card">
+                    <div class="card-header">
+                        <div class="card-title">Auth Attempts</div>
+                        <span class="text-muted">${detail.loginAttempts.length}</span>
+                    </div>
+                    <div class="auth-list">
+                        ${authHtml}
                     </div>
                 </div>
 
                 <div class="col-span-8 card">
                     <div class="card-header">
-                        <div class="card-title">Terminal Replay</div>
+                        <div class="card-title">Commands</div>
                     </div>
-                    ${createReplayViewer(ttylogPath)}
+                    ${createCommandTimeline(detail.events)}
                 </div>
 
-                <div class="col-span-4 card">
+                ${downloadsHtml}
+
+                <div class="col-span-12 card">
                     <div class="card-header">
-                        <div class="card-title">Session Events</div>
+                        <div class="card-title">All Events</div>
+                        <span class="text-muted">${detail.events.length} events</span>
                     </div>
-                    <div style="max-height: 400px; overflow-y: auto; padding-right: 0.5rem;">
+                    <div class="events-scroll">
                         ${createActivityFeed(detail.events)}
                     </div>
                 </div>
             </div>
         `;
     } catch (e) {
-        container.innerHTML = `<div class="text-danger">Failed to load session details: ${e.message}</div>`;
+        container.innerHTML = `<div class="text-danger">Failed to load session: ${escapeHtml(e.message)}</div>`;
     }
 }
